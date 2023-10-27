@@ -9,6 +9,10 @@ export const GlobalStyles = createGlobalStyle`
     color: #fff;
   }
 
+  button, input {
+    font-size: 1.5rem;
+  }
+
   :root {
     font-size: 62.5%;
   }
