@@ -9,6 +9,7 @@ const Home = () => {
   const { heroes, setHeroes } = useContext(HeroesContext);
   const [isLoading, setIsLoading] = useState(true);
   const [actualPage, setActualPage] = useState(1);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const fetchHeroes = async () => {
@@ -37,6 +38,18 @@ const Home = () => {
     setActualPage((prevState) => Math.min(prevState + 1, totalPages));
   };
 
+  const handleFilter = () => {
+    const name = inputRef.current.value.trim().toLowerCase();
+
+    if (name.length > 0) {
+      const heroesFilter = heroes.filter((item) =>
+        item.name.toLowerCase().includes(name)
+      );
+
+      setHeroes(heroesFilter);
+    }
+  };
+
   return (
     <Styles.Container>
       {isLoading ? (
@@ -44,12 +57,15 @@ const Home = () => {
       ) : (
         <>
           <Styles.FormSection>
-            <Styles.Input placeholder="Informe o nome" />
-            <Styles.Button>Filtrar</Styles.Button>
+            <Styles.Input placeholder="Informe o nome" ref={inputRef} />
+            <Styles.Button onClick={handleFilter}>Filtrar</Styles.Button>
           </Styles.FormSection>
           <Styles.ListSection>
             <Styles.ButtonPage onClick={handlePreviousPage}>
-              <ChevronLeft size={100} />
+              <ChevronLeft
+                size={100}
+                color={actualPage === 1 ? "gray" : "white"}
+              />
             </Styles.ButtonPage>
             <Styles.List>
               {heroes.slice(firstIndex, lastIndex).map((item) => {
@@ -61,7 +77,10 @@ const Home = () => {
               })}
             </Styles.List>
             <Styles.ButtonPage onClick={handleNextPage}>
-              <ChevronRight size={100} />
+              <ChevronRight
+                size={100}
+                color={actualPage === totalPages ? "gray" : "white"}
+              />
             </Styles.ButtonPage>
           </Styles.ListSection>
         </>
