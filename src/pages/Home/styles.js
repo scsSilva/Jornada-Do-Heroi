@@ -6,6 +6,8 @@ export const Container = styled.main`
   background-color: #001c30;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  place-items: center;
+  padding: 0 2rem;
 `;
 
 export const FormSection = styled.section`
@@ -14,6 +16,7 @@ export const FormSection = styled.section`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  width: 100%;
 `;
 
 export const Input = styled.input`
@@ -28,9 +31,15 @@ export const Input = styled.input`
 export const Button = styled.button`
   height: 6rem;
   width: 60%;
-  background-color: #4e4feb;
+  background: #4e4feb;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s background;
+
+  &:hover {
+    background: #393abf;
+  }
 `;
 
 export const ListSection = styled.section`
@@ -39,7 +48,14 @@ export const ListSection = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #eeeeee;
+  background-color: #4e4feb;
+  border-radius: 5px;
+`;
+
+export const ButtonPage = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 export const List = styled.ul`
