@@ -4,6 +4,7 @@ import { HeroesContext } from "../../contexts/HeroesContext";
 import { api } from "../../utils/api";
 import Hero from "../../components/Hero";
 import * as Styles from "./styles";
+import ModalHeroes from "../../components/ModalHeroes";
 
 const Home = () => {
   const { heroes, setHeroes } = useContext(HeroesContext);
@@ -85,6 +86,7 @@ const Home = () => {
           </Styles.ListSection>
         </>
       )}
+      <ModalHeroes />
     </Styles.Container>
   );
 };
