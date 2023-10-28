@@ -29,7 +29,7 @@ Para executar o projeto, basta seguir o passo a passo:
 
 1. Instale os pacotes<br>
 ```
->> yarn install
+>> yarn
 ```
 2. Agora, é só executar os comandos:<br>
 
