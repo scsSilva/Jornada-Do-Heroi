@@ -56,7 +56,7 @@ export const ImgLogo = styled.img`
   margin-bottom: 2rem;
 
   @media (max-width: 700px) {
-    height: 3rem;
+    height: 2.5rem;
     margin-bottom: 1rem;
   }
 `;
@@ -108,6 +108,7 @@ export const ListSection = styled.section`
   justify-content: space-between;
   background-color: #4e4feb;
   border-radius: 5px;
+  overflow: hidden;
 
   @media (max-width: 1000px) {
     height: 100%;
