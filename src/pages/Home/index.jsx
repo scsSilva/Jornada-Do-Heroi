@@ -6,12 +6,12 @@ import Hero from "../../components/Hero";
 import * as Styles from "./styles";
 import ModalHeroes from "../../components/ModalHeroes";
 import { calculateItensGrid } from "../../utils/gridItens";
+import usePagination from "../../hooks/usePagination";
 import Logo from "../../assets/logo.svg";
 
 const Home = () => {
   const { heroes, setHeroes } = useContext(HeroesContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [actualPage, setActualPage] = useState(1);
   const inputRef = useRef(null);
 
   const { innerWidth: width, innerHeight: height } = window;
@@ -34,17 +34,13 @@ const Home = () => {
     width: innerWidth,
   });
 
-  const totalPages = Math.ceil(heroes.length / itensPerPage);
-  const firstIndex = (actualPage - 1) * itensPerPage;
-  const lastIndex = actualPage * itensPerPage;
-
-  const handlePreviousPage = () => {
-    setActualPage((prevState) => Math.max(prevState - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setActualPage((prevState) => Math.min(prevState + 1, totalPages));
-  };
+  const {
+    currentPage,
+    totalPages,
+    handlePreviousPage,
+    handleNextPage,
+    getPageItems,
+  } = usePagination(heroes.length, itensPerPage);
 
   const handleFilter = () => {
     const name = inputRef.current.value.trim().toLowerCase();
@@ -77,11 +73,11 @@ const Home = () => {
         <Styles.ButtonPage onClick={handlePreviousPage}>
           <ChevronLeft
             size={width < 450 ? 70 : 100}
-            color={actualPage === 1 ? "gray" : "white"}
+            color={currentPage === 1 ? "gray" : "white"}
           />
         </Styles.ButtonPage>
         <Styles.List>
-          {heroes.slice(firstIndex, lastIndex).map((item) => {
+          {getPageItems(heroes).map((item) => {
             return (
               <Styles.ItemList key={item.id}>
                 <Hero hero={item} />
@@ -92,7 +88,7 @@ const Home = () => {
         <Styles.ButtonPage onClick={handleNextPage}>
           <ChevronRight
             size={width < 450 ? 70 : 100}
-            color={actualPage === totalPages ? "gray" : "white"}
+            color={currentPage === totalPages ? "gray" : "white"}
           />
         </Styles.ButtonPage>
       </Styles.ListSection>
