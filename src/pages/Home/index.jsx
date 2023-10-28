@@ -5,12 +5,16 @@ import { api } from "../../utils/api";
 import Hero from "../../components/Hero";
 import * as Styles from "./styles";
 import ModalHeroes from "../../components/ModalHeroes";
+import { calculateItensGrid } from "../../utils/gridItens";
+import Logo from "../../assets/logo.svg";
 
 const Home = () => {
   const { heroes, setHeroes } = useContext(HeroesContext);
   const [isLoading, setIsLoading] = useState(true);
   const [actualPage, setActualPage] = useState(1);
   const inputRef = useRef(null);
+
+  const { innerWidth: width, innerHeight: height } = window;
 
   useEffect(() => {
     const fetchHeroes = async () => {
@@ -25,7 +29,10 @@ const Home = () => {
     fetchHeroes();
   }, []);
 
-  const itensPerPage = 6;
+  const itensPerPage = calculateItensGrid({
+    height: innerHeight,
+    width: innerWidth,
+  });
 
   const totalPages = Math.ceil(heroes.length / itensPerPage);
   const firstIndex = (actualPage - 1) * itensPerPage;
@@ -51,41 +58,45 @@ const Home = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Styles.ContainerLoading>
+        <Styles.TextLoading>Carregando...</Styles.TextLoading>
+      </Styles.ContainerLoading>
+    );
+  }
+
   return (
     <Styles.Container>
-      {isLoading ? (
-        <p>Carregando...</p>
-      ) : (
-        <>
-          <Styles.FormSection>
-            <Styles.Input placeholder="Informe o nome" ref={inputRef} />
-            <Styles.Button onClick={handleFilter}>Filtrar</Styles.Button>
-          </Styles.FormSection>
-          <Styles.ListSection>
-            <Styles.ButtonPage onClick={handlePreviousPage}>
-              <ChevronLeft
-                size={100}
-                color={actualPage === 1 ? "gray" : "white"}
-              />
-            </Styles.ButtonPage>
-            <Styles.List>
-              {heroes.slice(firstIndex, lastIndex).map((item) => {
-                return (
-                  <Styles.ItemList key={item.id}>
-                    <Hero hero={item} />
-                  </Styles.ItemList>
-                );
-              })}
-            </Styles.List>
-            <Styles.ButtonPage onClick={handleNextPage}>
-              <ChevronRight
-                size={100}
-                color={actualPage === totalPages ? "gray" : "white"}
-              />
-            </Styles.ButtonPage>
-          </Styles.ListSection>
-        </>
-      )}
+      <Styles.FormSection>
+        <Styles.ImgLogo src={Logo} />
+        <Styles.Input placeholder="Informe o nome" ref={inputRef} />
+        <Styles.Button onClick={handleFilter}>Filtrar</Styles.Button>
+      </Styles.FormSection>
+      <Styles.ListSection>
+        <Styles.ButtonPage onClick={handlePreviousPage}>
+          <ChevronLeft
+            size={width < 450 ? 70 : 100}
+            color={actualPage === 1 ? "gray" : "white"}
+          />
+        </Styles.ButtonPage>
+        <Styles.List>
+          {heroes.slice(firstIndex, lastIndex).map((item) => {
+            return (
+              <Styles.ItemList key={item.id}>
+                <Hero hero={item} />
+              </Styles.ItemList>
+            );
+          })}
+        </Styles.List>
+        <Styles.ButtonPage onClick={handleNextPage}>
+          <ChevronRight
+            size={width < 450 ? 70 : 100}
+            color={actualPage === totalPages ? "gray" : "white"}
+          />
+        </Styles.ButtonPage>
+      </Styles.ListSection>
+
       <ModalHeroes />
     </Styles.Container>
   );
